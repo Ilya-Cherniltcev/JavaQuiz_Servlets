@@ -16,7 +16,7 @@
     ]
   },
   {
-    "question": " Какое ключевое словл используется в Java для создания объекта?",
+    "question": " Какое ключевое слово используется в Java для создания объекта?",
     "answers": [
       {"isCorrect": true, "text": "new"},
       {"isCorrect": false, "text": "create"},

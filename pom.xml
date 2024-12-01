@@ -37,23 +37,24 @@
     </dependency>
 
     <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
+
+    <dependency>
       <groupId>org.json</groupId>
       <artifactId>json</artifactId>
-      <version>20210307</version>
+      <version>20240303</version>
     </dependency>
+
     <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok-maven-plugin -->
     <dependency>
       <groupId>org.projectlombok</groupId>
-      <artifactId>lombok-maven-plugin</artifactId>
-      <version>1.18.20.0</version>
+      <artifactId>lombok</artifactId>
+      <version>1.18.36</version>
       <scope>provided</scope>
     </dependency>
-
-
-
-
-
-
 
   </dependencies>
   <build>

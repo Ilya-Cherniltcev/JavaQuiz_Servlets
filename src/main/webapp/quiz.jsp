@@ -3,13 +3,13 @@
 
 <html>
 <head>
-    <title>Java Quiz</title>
+    <title>Опросник по Java</title>
 </head>
 <body>
-<h1>Java Quiz</h1>
+<h1>Добро пожаловать в опросник по Java</h1>
 
 <c:if test="${quizEnded}">
-    <h2>Your score: ${score}</h2>
+    <h2>Ваш счет: ${score}</h2>
     <button onclick="window.location.href='?action=start'">Начать заново</button>
 </c:if>
 

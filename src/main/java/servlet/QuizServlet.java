@@ -2,7 +2,6 @@ package servlet;
 
 import model.Constants;
 import model.QuizService;
-import model.Player;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,35 +13,63 @@ import java.io.IOException;
 
 @WebServlet("/quiz")
 public class QuizServlet extends HttpServlet {
-    private final QuizService quizService = new QuizService();
+
+    private QuizService quizService;
+
+    @Override
+    public void init() throws ServletException {
+        super.init();
+        this.quizService = new QuizService();
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         String action = req.getParameter("action");
 
-        if ("start".equalsIgnoreCase(action)) {
-            quizService.loadQuestions(session);
-            req.setAttribute("currentIndex", 0);
-        } else if ("next".equalsIgnoreCase(action)) {
-            int currentIndex = Integer.parseInt(req.getParameter("currentIndex"));
-            Player player = (Player) session.getAttribute(Constants.PLAYER);
-            String answerIndex = req.getParameter("answerIndex");
-            if (answerIndex != null) {
-                int index = Integer.parseInt(answerIndex);
-                boolean isCorrect = quizService.getCurrentQuestion(currentIndex).getAnswers().get(index).isCorrect();
-                quizService.updateScore(player, isCorrect);
+        if ("start".equals(action)) {
+            // Логика для начала опроса
+            session.setAttribute(Constants.CURRENT_INDEX, 0);
+            session.setAttribute(Constants.SCORE, 0);
+            session.setAttribute(Constants.QUIZ_ENDED, false);
+
+            // Загружаем первый вопрос и добавляем в сессию
+            session.setAttribute("question", quizService.getCurrentQuestion(0));
+
+            // Отправляем запрос на следующую страницу
+            req.getRequestDispatcher("/quiz.jsp").forward(req, resp);
+        } else if ("next".equals(action)) {
+            int currentIndex = (int) session.getAttribute(Constants.CURRENT_INDEX);
+            int answerIndex;
+
+            try {
+                answerIndex = Integer.parseInt(req.getParameter("answerIndex"));
+            } catch (NumberFormatException e) {
+                // Обработка исключения, если параметр не является числом
+                resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid answer index.");
+                return;
             }
-            currentIndex = quizService.getNextQuestionIndex(currentIndex);
-            if (!quizService.hasMoreQuestions(currentIndex)) {
-                req.setAttribute("score", quizService.getTotalScore(player));
-                session.invalidate(); // Сброс сессии после завершения викторины
-                req.setAttribute("quizEnded", true);
-                currentIndex = -1; // Установим индекс на -1 для отображения результата
+
+            // Проверяем ответ
+            boolean isCorrect = quizService.checkAnswer(currentIndex, answerIndex);
+            int score = (int) session.getAttribute(Constants.SCORE);
+            if (isCorrect) {
+                score++;
             }
-            req.setAttribute("currentIndex", currentIndex);
+            session.setAttribute(Constants.SCORE, score);
+
+            // Переходим к следующему вопросу
+            currentIndex++;
+            if (currentIndex >= quizService.getQuestionCount()) {
+                session.setAttribute(Constants.QUIZ_ENDED, true);
+            } else {
+                session.setAttribute(Constants.CURRENT_INDEX, currentIndex);
+                // Обновляем вопрос
+                session.setAttribute("question", quizService.getCurrentQuestion(currentIndex));
+            }
+
+            // Отправляем запрос на следующую страницу
+            req.getRequestDispatcher("/quiz.jsp").forward(req, resp);
         }
-        req.setAttribute("question", quizService.getCurrentQuestion((Integer) req.getAttribute("currentIndex")));
-        req.getRequestDispatcher("/quiz.jsp").forward(req, resp);
     }
 }

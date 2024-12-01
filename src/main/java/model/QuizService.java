@@ -13,6 +13,7 @@ import java.util.List;
 public class QuizService {
     private List<Question> questions;
 
+    // Метод для загрузки вопросов
     public void loadQuestions(HttpSession session) throws IOException {
         if (session.getAttribute(Constants.QUESTIONS) == null) {
             String jsonContent = new String(Files.readAllBytes(Paths.get("questions.json")));
@@ -32,31 +33,34 @@ public class QuizService {
                 questions.add(new Question(questionText, answers));
             }
             session.setAttribute(Constants.QUESTIONS, questions);
-            session.setAttribute(Constants.PLAYER, new Player()); // Инициализация игрока
         } else {
             questions = (List<Question>) session.getAttribute(Constants.QUESTIONS);
         }
     }
 
+    // Возвращает текущий вопрос
     public Question getCurrentQuestion(int currentIndex) {
+        if (currentIndex < 0 || currentIndex >= questions.size()) {
+            throw new IndexOutOfBoundsException("Invalid question index: " + currentIndex);
+        }
         return questions.get(currentIndex);
     }
 
-    public int getTotalScore(Player player) {
-        return player.getScore();
+    // Возвращает общее количество вопросов
+    public int getQuestionCount() {
+        return questions.size();
     }
 
-    public void updateScore(Player player, boolean isCorrect) {
-        if (isCorrect) {
-            player.setScore(player.getScore() + 1);
+    // Проверяет правильность ответа
+    public boolean checkAnswer(int currentIndex, int answerIndex) {
+        if (currentIndex < 0 || currentIndex >= questions.size()) {
+            throw new IndexOutOfBoundsException("Invalid question index: " + currentIndex);
         }
-    }
-
-    public int getNextQuestionIndex(int currentIndex) {
-        return currentIndex + 1;
-    }
-
-    public boolean hasMoreQuestions(int currentIndex) {
-        return currentIndex < questions.size();
+        Question question = questions.get(currentIndex);
+        if (answerIndex < 0 || answerIndex >= question.getAnswers().size()) {
+            throw new IndexOutOfBoundsException("Invalid answer index: " + answerIndex);
+        }
+        Answer selectedAnswer = question.getAnswers().get(answerIndex);
+        return selectedAnswer.isCorrect();
     }
 }
