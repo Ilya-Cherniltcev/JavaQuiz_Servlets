@@ -2,6 +2,7 @@
 <html>
 <head>
     <title>Опросник по Java</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 <body>
 <h1>Добро пожаловать в опросник по Java!</h1>

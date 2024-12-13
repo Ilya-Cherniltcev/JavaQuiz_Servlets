@@ -13,10 +13,11 @@ import java.util.List;
 public class QuizService {
     private List<Question> questions;
 
-    // Метод для загрузки вопросов
     public void loadQuestions(HttpSession session) throws IOException {
         if (session.getAttribute(Constants.QUESTIONS) == null) {
-            String jsonContent = new String(Files.readAllBytes(Paths.get("questions.json")));
+            String filePath = session.getServletContext().getRealPath("/questions.json");
+            String jsonContent = new String(Files.readAllBytes(Paths.get(filePath)));
+
             JSONArray jsonArray = new JSONArray(jsonContent);
             questions = new ArrayList<>();
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -38,7 +39,6 @@ public class QuizService {
         }
     }
 
-    // Возвращает текущий вопрос
     public Question getCurrentQuestion(int currentIndex) {
         if (currentIndex < 0 || currentIndex >= questions.size()) {
             throw new IndexOutOfBoundsException("Invalid question index: " + currentIndex);

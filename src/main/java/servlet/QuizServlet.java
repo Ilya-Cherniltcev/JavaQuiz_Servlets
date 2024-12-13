@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import java.io.IOException;
 
 @WebServlet("/quiz")
@@ -28,6 +29,9 @@ public class QuizServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("start".equals(action)) {
+            // Загружаем все вопросы
+            quizService.loadQuestions(session);
+
             // Логика для начала опроса
             session.setAttribute(Constants.CURRENT_INDEX, 0);
             session.setAttribute(Constants.SCORE, 0);
@@ -62,6 +66,9 @@ public class QuizServlet extends HttpServlet {
             currentIndex++;
             if (currentIndex >= quizService.getQuestionCount()) {
                 session.setAttribute(Constants.QUIZ_ENDED, true);
+                // Выводим финальный счет
+                req.setAttribute("quizEnded", true);
+                req.setAttribute("score", score);
             } else {
                 session.setAttribute(Constants.CURRENT_INDEX, currentIndex);
                 // Обновляем вопрос
