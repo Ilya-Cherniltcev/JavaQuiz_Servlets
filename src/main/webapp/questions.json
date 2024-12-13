@@ -1,0 +1,106 @@
+[
+  {
+    "question": "Какой модификатор доступа по умолчанию в Java?",
+    "answers": [
+      {"isCorrect": false, "text": "private"},
+      {"isCorrect": true, "text": "default"},
+      {"isCorrect": false, "text": "protected"}
+    ]
+  },
+  {
+    "question": "Какой из указанных типов данных не отностися к примитивным?",
+    "answers": [
+      {"isCorrect": true, "text": "String"},
+      {"isCorrect": false, "text": "int"},
+      {"isCorrect": false, "text": "boolean"}
+    ]
+  },
+  {
+    "question": " Какое ключевое слово используется в Java для создания объекта?",
+    "answers": [
+      {"isCorrect": true, "text": "new"},
+      {"isCorrect": false, "text": "create"},
+      {"isCorrect": false, "text": "instance"}
+    ]
+  },
+  {
+    "question": "Какой метод используется для запуска программы на Java?",
+    "answers": [
+      {"isCorrect": true, "text": "public static void main(String[] args)"},
+      {"isCorrect": false, "text": "void main()"},
+      {"isCorrect": false, "text": "main(String args)"}
+    ]
+  },
+  {
+    "question": "Какой тип данных используется для хранения целых чисел?",
+    "answers": [
+      {"isCorrect": true, "text": "int"},
+      {"isCorrect": false, "text": "float"},
+      {"isCorrect": false, "text": "char"}
+    ]
+  },
+  {
+    "question": "Что происходит при делении на ноль в Java?",
+    "answers": [
+      {"isCorrect": true, "text": "Выброс исключения ArithmeticException"},
+      {"isCorrect": false, "text": "Возвращается 0"},
+      {"isCorrect": false, "text": "Программа завершает работу"}
+    ]
+  },
+  {
+    "question": "Какой метод используется для сравнения значений ссылочных типов?",
+    "answers": [
+      {"isCorrect": false, "text": "hashCode()"},
+      {"isCorrect": true, "text": "оба"},
+      {"isCorrect": false, "text": "equals()"}
+    ]
+  },
+  {
+    "question": "Что такое интерфейс в Java?",
+    "answers": [
+      {"isCorrect": true, "text": "Контракт, который должен быть реализован конкретным классом"},
+      {"isCorrect": false, "text": "Класс с реализацией методов"},
+      {"isCorrect": false, "text": "Специальный тип переменной"}
+    ]
+  },
+  {
+    "question": "Какой сборщик мусора используется в Java?",
+    "answers": [
+      {"isCorrect": true, "text": "Garbage Collector"},
+      {"isCorrect": false, "text": "Memory Manager"},
+      {"isCorrect": false, "text": "Auto Cleaner"}
+    ]
+  },
+  {
+    "question": "Что происходит, если не обработать Checked Exception?",
+    "answers": [
+      {"isCorrect": true, "text": "Программа не скомпилируется"},
+      {"isCorrect": false, "text": "Программа завершится"},
+      {"isCorrect": false, "text": "Исключение будет проигнорировано"}
+    ]
+  },
+  {
+    "question": "Какое ключевое слово в конструкции try можно опустить?",
+    "answers": [
+      {"isCorrect": false, "text": "catch"},
+      {"isCorrect": true, "text": "finally"},
+      {"isCorrect": false, "text": "оба"}
+    ]
+  },
+  {
+    "question": "Какой метод используется для получения длины массива?",
+    "answers": [
+      {"isCorrect": true, "text": "length"},
+      {"isCorrect": false, "text": "size"},
+      {"isCorrect": false, "text": "getLength()"}
+    ]
+  },
+  {
+    "question": " Какой размер занимает тип данных int?",
+    "answers": [
+      {"isCorrect": false, "text": "8 bits"},
+      {"isCorrect": true, "text": "32 bits"},
+      {"isCorrect": false, "text": "64 bits"}
+    ]
+  }
+]
