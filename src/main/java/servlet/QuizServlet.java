@@ -1,7 +1,7 @@
 package servlet;
 
 import model.Constants;
-import model.QuizService;
+import service.QuizService;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -29,18 +29,18 @@ public class QuizServlet extends HttpServlet {
         String action = req.getParameter("action");
 
         if ("start".equals(action)) {
-            // Загружаем все вопросы
+            // Loading all questions
             quizService.loadQuestions(session);
 
-            // Логика для начала опроса
+            // Logic for beginning of quiz
             session.setAttribute(Constants.CURRENT_INDEX, 0);
             session.setAttribute(Constants.SCORE, 0);
             session.setAttribute(Constants.QUIZ_ENDED, false);
 
-            // Загружаем первый вопрос и добавляем в сессию
+            // Load first question and add to session
             session.setAttribute("question", quizService.getCurrentQuestion(0));
 
-            // Отправляем запрос на следующую страницу
+            // Send request to next page
             req.getRequestDispatcher("/quiz.jsp").forward(req, resp);
         } else if ("next".equals(action)) {
             int currentIndex = (int) session.getAttribute(Constants.CURRENT_INDEX);
@@ -49,12 +49,12 @@ public class QuizServlet extends HttpServlet {
             try {
                 answerIndex = Integer.parseInt(req.getParameter("answerIndex"));
             } catch (NumberFormatException e) {
-                // Обработка исключения, если параметр не является числом
+                // Checking for bad parameter (if it doesn't a number)
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Invalid answer index.");
                 return;
             }
 
-            // Проверяем ответ
+            // Checking of answer
             boolean isCorrect = quizService.checkAnswer(currentIndex, answerIndex);
             int score = (int) session.getAttribute(Constants.SCORE);
             if (isCorrect) {
@@ -62,20 +62,20 @@ public class QuizServlet extends HttpServlet {
             }
             session.setAttribute(Constants.SCORE, score);
 
-            // Переходим к следующему вопросу
+            // Go to next question
             currentIndex++;
             if (currentIndex >= quizService.getQuestionCount()) {
                 session.setAttribute(Constants.QUIZ_ENDED, true);
-                // Выводим финальный счет
+                // print final score
                 req.setAttribute("quizEnded", true);
                 req.setAttribute("score", score);
             } else {
                 session.setAttribute(Constants.CURRENT_INDEX, currentIndex);
-                // Обновляем вопрос
+                // Renew question
                 session.setAttribute("question", quizService.getCurrentQuestion(currentIndex));
             }
 
-            // Отправляем запрос на следующую страницу
+            // Send request to next page
             req.getRequestDispatcher("/quiz.jsp").forward(req, resp);
         }
     }

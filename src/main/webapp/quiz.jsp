@@ -14,7 +14,7 @@
 </c:if>
 
 <c:if test="${not quizEnded}">
-    <h2>${question.questionText}</h2>
+    <h2>${currentIndex + 1}. ${question.questionText}</h2>
     <form action="quiz" method="get">
         <input type="hidden" name="action" value="next">
         <input type="hidden" name="currentIndex" value="${currentIndex}">
@@ -24,7 +24,6 @@
                 <input type="radio" name="answerIndex" value="${status.index}"> ${answer.text}
             </div>
         </c:forEach>
-
 
         <button type="submit">Next</button>
 

@@ -1,5 +1,9 @@
-package model;
+package service;
 
+import lombok.Setter;
+import model.Answer;
+import model.Constants;
+import model.Question;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -11,8 +15,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class QuizService {
+    @Setter
     private List<Question> questions;
 
+    /**
+     * Load all questions
+     *
+     * @param session take actual HttpSession
+     * @throws IOException if file doesn't exist or other io exception
+     */
     public void loadQuestions(HttpSession session) throws IOException {
         if (session.getAttribute(Constants.QUESTIONS) == null) {
             String filePath = session.getServletContext().getRealPath("/questions.json");
@@ -35,10 +46,20 @@ public class QuizService {
             }
             session.setAttribute(Constants.QUESTIONS, questions);
         } else {
-            questions = (List<Question>) session.getAttribute(Constants.QUESTIONS);
+            try {
+                questions = (List<Question>) session.getAttribute(Constants.QUESTIONS);
+            } catch (ClassCastException | NullPointerException e) {
+                throw new RuntimeException(e.getMessage() + "...Something's wrong with questions...");
+            }
         }
     }
 
+    /**
+     * Getting of current question
+     *
+     * @param currentIndex take current number of question
+     * @return Question - current question
+     */
     public Question getCurrentQuestion(int currentIndex) {
         if (currentIndex < 0 || currentIndex >= questions.size()) {
             throw new IndexOutOfBoundsException("Invalid question index: " + currentIndex);
@@ -46,12 +67,23 @@ public class QuizService {
         return questions.get(currentIndex);
     }
 
-    // Возвращает общее количество вопросов
+    /**
+     * Getting of actual question's number
+     *
+     * @return actual counter
+     */
     public int getQuestionCount() {
         return questions.size();
     }
 
-    // Проверяет правильность ответа
+
+    /**
+     * Checking of answer (right or no)
+     *
+     * @param currentIndex take current number of question
+     * @param answerIndex  take index of answer
+     * @return is selected answer correct?
+     */
     public boolean checkAnswer(int currentIndex, int answerIndex) {
         if (currentIndex < 0 || currentIndex >= questions.size()) {
             throw new IndexOutOfBoundsException("Invalid question index: " + currentIndex);
